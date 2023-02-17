@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/admin}" th:object="${user}">
+  <div th:fragment="forma">
+    <label for="username">Userame</label>
+    <input type="text" th:field="*{username}" id="username">
+    <br>
+    <label for="age">Age</label>
+    <input type="text" th:field="*{age}" id="age">
+    <br>
+    <label for="email">Email</label>
+    <input type="text" th:field="*{email}" id="email">
+    <br>
+    <label for="password">Password</label>
+    <input type="password" th:field="*{password}" id="password">
+    <br>
+    <select class="form-select" multiple th:field="*{role}">
+      <option th:value="ROLE_ADMIN" th:text="admin"></option>
+      <option selected th:value="ROLE_USER" th:text="user"></option>
+    </select>
+    <br>
+  </div>
+  <input type="submit" value="Create">
+</form>
+
+<div th:replace="~{common :: header}"></div>
+</body>
+</html>
