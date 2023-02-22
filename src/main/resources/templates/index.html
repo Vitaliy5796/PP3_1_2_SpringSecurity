@@ -24,7 +24,7 @@
         <td th:text="${u.getEmail()}"></td>
         <td th:text="${u.getAge()}"></td>
         <td th:text="${u.getPassword()}"></td>
-        <td th:text="${u.getRole()}"></td>
+        <td th:each="role : ${u.roles}"><span th:text="${role.role}"></span></td>
         <td>
             <form th:method="DELETE" th:action="@{/admin/{id}(id=${u.getId()})}">
                 <input type="submit" value="Delete">

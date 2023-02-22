@@ -24,7 +24,8 @@
         <td th:text="${u.getEmail()}">Email</td>
         <td th:text="${u.getAge()}">Age</td>
         <td th:text="${u.getPassword()}">Password</td>
-        <td th:text="${u.getRole()}">Role</td>
+        <td th:each="role : ${u.roles}">
+            <span th:text="${role.role }"></span></td>
     </tr>
     </tbody>
 </table>

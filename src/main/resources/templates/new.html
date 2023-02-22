@@ -19,11 +19,6 @@
     <label for="password">Password</label>
     <input type="password" th:field="*{password}" id="password">
     <br>
-    <select class="form-select" multiple th:field="*{role}">
-      <option th:value="ROLE_ADMIN" th:text="admin"></option>
-      <option selected th:value="ROLE_USER" th:text="user"></option>
-    </select>
-    <br>
   </div>
   <input type="submit" value="Create">
 </form>
