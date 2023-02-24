@@ -1,14 +1,15 @@
 package ru.kata.spring.boot_security.demo.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.Collections;
@@ -16,17 +17,18 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class UserServiceImpl implements UserDetailsService, UserService {
 
     private final UserRepository userRepository;
 
-//    private final RoleRepository roleRepository;
-//
-//    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    @Autowired
+    @Lazy
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> findAll() {
@@ -38,7 +40,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return foundUser.orElse(null);
     }
 
-    @Transactional
     public boolean save(User user) {
         User userDB = userRepository.findByUsername(user.getUsername());
 
@@ -46,17 +47,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             return false;
         }
         user.setRoles(Collections.singleton(new Role("ROLE_USER")));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
     }
 
-    @Transactional
     public void update(Long id, User updateUser) {
         updateUser.setId(id);
         userRepository.save(updateUser);
     }
 
-    @Transactional
     public void delete(Long id) {
         userRepository.deleteById(id);
     }
