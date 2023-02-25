@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     public void update(Long id, User updateUser) {
         updateUser.setId(id);
+        updateUser.setPassword(passwordEncoder.encode(updateUser.getPassword()));
         userRepository.save(updateUser);
     }
 
